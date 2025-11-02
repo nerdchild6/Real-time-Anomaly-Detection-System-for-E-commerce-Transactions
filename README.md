@@ -36,15 +36,23 @@ To see the results of the fraud detection, you can create the dashboard in *Meta
     - Database Name: `ecomm_fraud_db`
     - Username: `postgres`
     - Password: `123`
-- Once connected, you can create questions and dashboards to visualize the fraud detection results.
+- Once connected, you can create questions and dashboards to visualize the fraud detection results. For example: create simple graph
 
-| Step1 | Step2 | Step3| 
+| Step1: Go to database  | Step2: Select database you want | Step3: Select table | 
 | :---: | :---: | :---: |
-| <img width="960" height="505" alt="Screenshot 2025-11-02 221557" src="https://github.com/user-attachments/assets/900e8dc5-e1ef-44dc-9224-f6d756aa6a35" />
-| <img width="300" alt="Good nutrition result" src="https://github.com/user-attachments/assets/031748b5-9eb9-43b7-9524-9e3ab5432e76" /> 
-| <img width="300" alt="Poor nutrition result" src="https://github.com/user-attachments/assets/133bb978-7ef7-4d7b-b1a4-8223f215b56b" /> 
-| 
-|
+| <img width="960" height="505" alt="Screenshot 2025-11-02 221557" src="https://github.com/user-attachments/assets/900e8dc5-e1ef-44dc-9224-f6d756aa6a35" /> | <img width="960" height="505" alt="Screenshot 2025-11-02 221846" src="https://github.com/user-attachments/assets/61f31e19-69e0-44ee-85fa-289cf5058bdd" /> | <img width="960" height="505" alt="Screenshot 2025-11-02 221916" src="https://github.com/user-attachments/assets/2a7af0bb-e0ea-406e-9867-f51de96361ec" /> | 
+
+| Step4: Click 'Visualization' | Step5: Click 'Summarize' | Step6: Click 'Amount' column |
+| :---: | :---: | :---: |
+| <img width="960" height="504" alt="Screenshot 2025-11-02 222002" src="https://github.com/user-attachments/assets/e3434eef-9012-42ab-9c40-53f9704b97c6" /> |  <img width="960" height="504" alt="Screenshot 2025-11-02 222220" src="https://github.com/user-attachments/assets/3deddf59-ba7b-4588-b7e1-30ec02be6923" /> | <img width="960" height="503" alt="Screenshot 2025-11-02 222316" src="https://github.com/user-attachments/assets/db34ad4a-83e1-4d84-a67a-2047184aa4fa" /> |
+
+| Step7: Click 'Done' | Step8: Click 'Save' | Step9: Config as you want and click 'Save' |
+| :---: | :---: | :---: |
+| <img width="960" height="505" alt="Screenshot 2025-11-02 222426" src="https://github.com/user-attachments/assets/8b5a4cd5-68d4-4885-84f6-f34a941825cd" /> | <img width="960" height="504" alt="Screenshot 2025-11-02 222520" src="https://github.com/user-attachments/assets/c9d96f91-91e6-45b6-847f-3d141371086d" /> | <img width="960" height="503" alt="Screenshot 2025-11-02 222737" src="https://github.com/user-attachments/assets/013f61bc-fa2b-4d90-8b2d-5a26b048609a" /> |
+
+| Step10: Simple graph are show |
+| :---: |
+| <img width="960" height="505" alt="Screenshot 2025-11-02 222838" src="https://github.com/user-attachments/assets/17eabe45-dedd-4035-8ef8-e32a67a9c7d4" /> |
 
 ### 4. Stop the Project
 ```bash
