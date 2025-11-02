@@ -18,17 +18,33 @@ Inside psql, run:
 SELECT COUNT(*) FROM transactions;
 SELECT COUNT(*) FROM anomalies;
 ```
+quit psql, run:
+```bash
+exit
+```
+
 ### 2. Show the result(Metabase)
 To see the results of the fraud detection, you can create the dashboard in *Metabase*.
 - Open your browser and go to `http://localhost:3000`
 - Follow the setup instructions to create an admin account.
-- Connect to the PostgreSQL database using the following details:
+- Connect to the PostgreSQL database.
+
+| Step1: Go to database  | Step2: Create PostgreSQL connection |
+| :---: | :---: |
+| <img width="960" height="505" alt="Screenshot 2025-11-02 221557" src="https://github.com/user-attachments/assets/900e8dc5-e1ef-44dc-9224-f6d756aa6a35" /> | <img width="960" height="505" alt="image" src="https://github.com/user-attachments/assets/0eae0761-4052-4228-b7ff-bd908c005a03" /> | 
+- Using the following details:
     - Database type: `PostgreSQL`
+    - Display name: (up to you)
     - Host: `postgres_db`
     - Port: `5432`
     - Database Name: `ecomm_fraud_db`
     - Username: `postgres`
     - Password: `123`
+
+| Step3: Exit Admin mode |
+| :---: |
+| <img width="960" height="505" alt="Screenshot 2025-11-02 233255" src="https://github.com/user-attachments/assets/a77c6fec-54c6-4fd8-ae3b-fae0944c8eaa" /> |
+
 - Once connected, you can create questions and dashboards to visualize the fraud detection results. For example: create simple graph
 
 | Step1: Go to database  | Step2: Select database you want | Step3: Select table | 
@@ -53,7 +69,6 @@ docker compose down
 ```
 ### Additional Notes
 - Ensure Docker and Docker Compose are installed on your machine.
-- The model training step is a one-time process; you don't need to retrain the model for each deployment
 - Logs for each service can be viewed using:
 ```bash
 docker logs <service_name>
