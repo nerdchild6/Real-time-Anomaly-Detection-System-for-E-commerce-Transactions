@@ -6,7 +6,7 @@ from data_generator import generate_transaction
 # การตั้งค่า: 'localhost:9092' ถูกต้องแล้วสำหรับการรัน Producer นอก Docker 
 # เพื่อเชื่อมต่อกับพอร์ตที่ถูก Expose ของ Container Kafka
 producer = KafkaProducer(
-    bootstrap_servers='localhost:9092',
+    bootstrap_servers='kafka_fraud:9093',
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
 

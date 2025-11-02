@@ -1,0 +1,113 @@
+version: "3.9"
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper_fraud
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - fraud_detection_network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka_fraud
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper_fraud:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka_fraud:9093,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - fraud_detection_network
+
+  producer:
+    image: python:3.10-slim
+    container_name: producer_fraud
+    working_dir: /app
+    volumes:
+      - ./data-eng-proj-main:/app
+    command: sh -c "pip install -r requirements.txt && python producer.py"
+    depends_on:
+      - kafka
+    networks:
+      - fraud_detection_network
+
+  postgres_db:
+    image: postgres:14-alpine
+    container_name: postgres_fraud_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '123'
+      POSTGRES_DB: ecomm_fraud_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./DataEng-DataWH-main/Data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fraud_detection_network
+
+  metabase-db:
+    image: postgres:16-alpine
+    container_name: metabase-app-db
+    restart: always
+    environment:
+      POSTGRES_DB: metabase
+      POSTGRES_USER: metabaseuser
+      POSTGRES_PASSWORD: your_strong_db_password # <--- CHANGE THIS
+    volumes:
+      - metabase_db_data:/var/lib/postgresql/data
+    networks:
+      - fraud_detection_network
+
+  metabase-app:
+    image: metabase/metabase:latest
+    container_name: metabase-server
+    restart: always
+    depends_on:
+      - metabase-db
+      - postgres_db
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_HOST: metabase-db
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabaseuser
+      MB_DB_PASS: your_strong_db_password # <--- USE THE SAME PASSWORD
+      JAVA_TIMEZONE: Asia/Bangkok
+    networks:
+      - fraud_detection_network
+
+  pyspark_ml:
+    build:
+      context: ./data-eng-ml-main
+      dockerfile: Dockerfile.pyspark
+    image: pyspark_ml_image
+    container_name: pyspark_ml_fraud
+    volumes:
+      - ./data-eng-ml-main/spark_streaming_processor.py:/home/jovyan/work/spark_streaming_processor.py
+      - ./data-eng-ml-main/requirements.txt:/home/jovyan/work/requirements.txt
+      - ./data-eng-ml-main/model:/home/jovyan/work/model
+    networks:
+      - fraud_detection_network
+    command: /usr/local/spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 --driver-class-path /usr/local/spark/jars/postgresql-42.5.0.jar /home/jovyan/work/spark_streaming_processor.py
+
+networks:
+  fraud_detection_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  metabase_db_data:
