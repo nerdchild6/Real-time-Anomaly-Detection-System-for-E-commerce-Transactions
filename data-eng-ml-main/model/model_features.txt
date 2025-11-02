@@ -1,0 +1,5 @@
+amount
+product_category_Electronics
+product_category_Fashion
+product_category_Home
+product_category_Toys

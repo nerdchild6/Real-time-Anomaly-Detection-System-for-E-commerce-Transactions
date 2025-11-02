@@ -1,0 +1,24 @@
+# Dockerfile (ใน data-eng-ml-main)
+# Base image ที่มีการติดตั้ง PySpark และ Python dependencies พร้อมแล้ว
+FROM jupyter/pyspark-notebook:latest
+
+# ---
+# ติดตั้ง Python dependencies สำหรับ train_model.py และ spark_streaming_app.py
+# ---
+USER root
+# ต้องมีไฟล์ requirements.txt ในโฟลเดอร์เดียวกัน
+COPY requirements.txt /tmp/
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+RUN rm /tmp/requirements.txt 
+
+# ---
+# ** ดาวน์โหลด PostgreSQL JDBC Driver **
+# ---
+RUN apt-get update && apt-get install -y wget && \
+    wget -O /usr/local/spark/jars/postgresql-42.5.0.jar https://jdbc.postgresql.org/download/postgresql-42.5.0.jar && \
+    apt-get purge -y wget && \
+    rm -rf /var/lib/apt/lists/*
+
+# กำหนด working directory ภายใน Container
+USER jovyan
+WORKDIR /home/jovyan/work

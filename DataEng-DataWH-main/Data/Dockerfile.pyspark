@@ -1,0 +1,12 @@
+# Dockerfile.pyspark
+# ใช้ Jupyter's PySpark notebook image ซึ่งมี PySpark และ Environment ที่พร้อมใช้งาน
+FROM jupyter/pyspark-notebook:latest
+
+# ดาวน์โหลดและติดตั้ง PostgreSQL JDBC Driver
+USER root
+# ติดตั้ง Driver ใน Path มาตรฐานของ Spark
+RUN wget -O /usr/local/spark/jars/postgresql-jdbc.jar https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
+USER ${NB_UID}
+
+# กำหนด working directory เพื่อให้เข้าถึงไฟล์ใน Volume Mount ได้
+WORKDIR /app
