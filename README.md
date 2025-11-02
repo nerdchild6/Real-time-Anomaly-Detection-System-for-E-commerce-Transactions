@@ -2,14 +2,7 @@
 
 Follow these steps to deploy and run the entire real-time pipeline.
 
-### 1. Train the Model (One-time setup)
-Before running the pipeline, you need to train the model first.
-```bash
-cd data-eng-ml-main
-pip install -r requirements.txt
-python train_model.py
-```
-### 2. Start the Project
+### 1. Start the Project
 ```bash
 docker compose up -d
 ```
@@ -25,7 +18,7 @@ Inside psql, run:
 SELECT COUNT(*) FROM transactions;
 SELECT COUNT(*) FROM anomalies;
 ```
-### 3. Show the result(Metabase)
+### 2. Show the result(Metabase)
 To see the results of the fraud detection, you can create the dashboard in *Metabase*.
 - Open your browser and go to `http://localhost:3000`
 - Follow the setup instructions to create an admin account.
@@ -54,22 +47,22 @@ To see the results of the fraud detection, you can create the dashboard in *Meta
 | :---: |
 | <img width="960" height="505" alt="Screenshot 2025-11-02 222838" src="https://github.com/user-attachments/assets/17eabe45-dedd-4035-8ef8-e32a67a9c7d4" /> |
 
-### 4. Stop the Project
+### Stop the Project
 ```bash
 docker compose down
 ```
-### 5. Additional Notes
+### Additional Notes
 - Ensure Docker and Docker Compose are installed on your machine.
 - The model training step is a one-time process; you don't need to retrain the model for each deployment
 - Logs for each service can be viewed using:
 ```bash
 docker logs <service_name>
 ```
-### 6. Troubleshooting
+### Troubleshooting
 - If you encounter issues with Kafka, ensure that the Kafka and Zookeeper services are running properly
 - For database connection issues, verify the connection details and ensure the PostgreSQL service is up and running
 - Check the logs of individual services for more detailed error messages.
-### 7. Clean Up
+### Clean Up
 To remove all Docker containers, networks, and volumes created by the project, run:
 ```bash
 docker-compose down --volumes
