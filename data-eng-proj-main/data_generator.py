@@ -33,8 +33,7 @@ def generate_transaction():
         "amount": amount, # ใช้ค่า amount ที่กำหนดตามเงื่อนไข Anomaly แล้ว
         "product_category": category,
         "timestamp": datetime.utcnow().isoformat(),
-        "ip_address": fake.ipv4_public(),
-        "is_anomalous": is_anomaly_flag 
+        "ip_address": fake.ipv4_public()
     }
     return transaction
 

@@ -89,8 +89,7 @@ schema = StructType([
     StructField("amount", DoubleType(), True),
     StructField("product_category", StringType(), True),
     StructField("timestamp", StringType(), True),
-    StructField("ip_address", StringType(), True),
-    StructField("is_anomalous", IntegerType(), True) 
+    StructField("ip_address", StringType(), True)
 ])
 
 # --- Read Stream from Kafka ---
