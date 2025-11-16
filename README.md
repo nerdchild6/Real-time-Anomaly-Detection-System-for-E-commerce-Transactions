@@ -1,10 +1,94 @@
-## Setup & Running the Pipeline
+# Real-time E-commerce Anomaly Detection System
+
+This university project demonstrates a complete, end-to-end **real-time data pipeline** for detecting fraudulent or anomalous e-commerce transactions.
+
+The system uses a modern event-driven architecture powered by:
+
+- **Apache Kafka** – real-time data ingestion  
+- **Apache Spark (PySpark)** – stream processing & ML scoring  
+- **PostgreSQL** – persistent storage  
+- **Metabase** – live dashboarding  
+- **Docker Compose** – service orchestration  
+
+---
+
+## 📊 Dashboard Preview
+
+A live dashboard showing:
+
+- Key transaction metrics  
+- Real-time feed of flagged anomalies  
+
+---
+
+## 🚨 The Problem
+
+Fraud detection in e-commerce is often performed as **batch analysis**, meaning anomalies are detected hours or days later—when it's too late to stop fraudulent orders.
+
+---
+
+## ✅ Our Solution
+
+We built a **real-time, proactive fraud detection system**:
+
+- Ingests incoming transactions instantly  
+- Scores each transaction using a pre-trained **Isolation Forest (scikit-learn)** model  
+- Flags transactions as **normal** or **anomalous**  
+- Streams enriched results to PostgreSQL  
+- Visualizes them in Metabase with auto-refresh  
+
+This enables immediate action on high-risk transactions.
+
+---
+
+## 🏗️ System Architecture
+
+All components run as independent Docker services managed via **Docker Compose**.
+
+### 🔄 Data Flow
+
+1. **Ingest (Kafka)**  
+   - `producer.py` generates synthetic transactions using `Faker` library  
+   - Publishes JSON messages to Kafka topic: `transactions`
+
+2. **Process (Spark)**  
+   - PySpark Structured Streaming consumes the Kafka topic
+
+3. **Enrich (ML)**  
+   - Spark loads a pre-trained Isolation Forest model  
+   - Adds a boolean prediction column: `is_anomaly`
+
+4. **Store (PostgreSQL)**  
+   - Spark writes enriched records into the database
+
+5. **Visualize (Metabase)**  
+   - Metabase queries the PostgreSQL table
+   - Updates charts and anomaly feed
+<img width="1920" height="1080" alt="Real-time E-commerce Anomaly Detection" src="https://github.com/user-attachments/assets/d1fb7b1a-7a7b-4909-8e79-44fea2f9db6a" />
+
+---
+
+## 🧰 Tech Stack
+
+| Category            | Tool                | Purpose                                                    |
+|--------------------|---------------------|------------------------------------------------------------|
+| Orchestration       | Docker Compose      | Manages multi-container environment                        |
+| Data Ingestion      | Apache Kafka        | Real-time message streaming                                |
+| Stream Processing   | Apache Spark        | Distributed processing of live data                        |
+| Machine Learning    | Scikit-learn        | IsolationForest anomaly detection model                    |
+| Data Storage        | PostgreSQL          | Stores enriched transaction data                           |
+| Visualization       | Metabase            | Dashboard for real-time insights                           |
+| Database Client     | DBeaver             | Used for schema design and validation                      |
+
+---
+
+## 🚀 How to Run This Project
 
 Follow these steps to deploy and run the entire real-time pipeline.
 
 ### 1. Start the Project
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 ### Verification & Debugging
@@ -83,5 +167,62 @@ To remove all Docker containers, networks, and volumes created by the project, r
 docker-compose down --volumes
 ```
 This will help you free up space and ensure a clean state for future deployments.
+
+---
+## 📁 Project Structure & Team Roles
+
+This project was built by a 5-person team, with each member responsible for a critical part of the real-time data pipeline.
+
+---
+
+### 🧩 `docker-compose.yml`  
+**Team Lead & Data Architect — [Worrawit Klangsaeng]**  
+- Master orchestration file that defines and manages all Docker services.
+
+---
+
+### 📦 `producer/`  
+**Data Source & Ingestion Engineer — [Yoon Thedar Cho]**
+
+- **`producer.py`** – Generates synthetic e-commerce transactions using `Faker` library and publishes them to Kafka via `kafka-python`.  
+- **`Dockerfile`** – Containerizes the producer service.
+
+---
+
+### ⚙️ `spark-app/`  
+**Machine Learning & Processing Engineer — [Thanapat Nasa]**
+
+- **`app.py`** – PySpark Structured Streaming application connecting Kafka → Spark → PostgreSQL.  
+- **`model/isolation_forest.joblib`** – Pre-trained Isolation Forest model (scikit-learn).  
+- **`Dockerfile`** – Container for the Spark job and dependencies.
+
+---
+
+### 🗄️ `database/`  
+**Database & Data Storage Engineer — [Engkatuch Sombatkumjorn]**
+
+- **`init.sql`** – Initializes the PostgreSQL schema and creates the `transactions` table at startup.
+
+---
+
+### 📊 `dashboard/`  
+**Dashboard & Reporting Engineer — [Pornprom Ounsuchat]**
+
+- Responsible for SQL queries and Metabase dashboards  
+- Builds the real-time visualization for anomalies and key metrics.
+
+---
+
+## 🔮 Future Work
+
+### ☁️ Deploy to Cloud  
+Migrate the full Docker Compose stack to AWS ECS, GCP Cloud Run, or another cloud provider to achieve production-level scalability.
+
+### 🚨 Real-time Alerting  
+Create a new microservice that consumes from an `anomalies` Kafka topic and sends Slack or email alerts instantly.
+
+### 🤖 Advanced Machine Learning  
+Implement stateful or deep learning models (e.g., Autoencoders, LSTM) directly in Spark ML to detect more complex fraudulent behavior patterns.
+
 
 
